@@ -1,3 +1,4 @@
+
 controllers:
     resource: ../src/Controller/
     type: annotation
@@ -5,3 +6,18 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+lucky_number:
+    path: /lucky/number
+    controller: App\Controller\LuckyController::number
+index:
+    path: /
+    controller: App\Controller\BlogController::index
+contact:
+    path: /contact
+    controller: App\Controller\BlogController::contact
+login:
+    path: /login
+    controller: App\Controller\BlogController::login
+list:
+    path: /list
+    controller: App\Controller\BlogController::list
