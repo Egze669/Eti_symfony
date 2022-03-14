@@ -10,14 +10,17 @@ lucky_number:
     path: /lucky/number
     controller: App\Controller\LuckyController::number
 index:
-    path: /
+    path: /blog/index
     controller: App\Controller\BlogController::index
 contact:
-    path: /contact
+    path: /blog/contact
     controller: App\Controller\BlogController::contact
 login:
-    path: /login
+    path: /blog/login
     controller: App\Controller\BlogController::login
 list:
-    path: /list
+    path: /blog/list/{page}
     controller: App\Controller\BlogController::list
+view:
+    path: /blog/view
+    controller: App\Controller\BlogController::view
