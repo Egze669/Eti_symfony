@@ -2,6 +2,6 @@
 {% block content%}
     {{ parent() }}
     <ul>
-        <li><a href="{{ url('view') }}">post 1</a></li>
+        <li><a href="{{ url('view',{'urlkey':'test'}) }}">post 1</a></li>
     </ul>
 {% endblock %}

@@ -13,10 +13,10 @@ class BlogController extends  AbstractController
     /**
      * @throws \Exception
      */
-    public function view(Request $req,string $urkey = "23123"): Response
+    public function view(Request $req,string $urlkey): Response
     {
         $urkey = $req->query->get('urkey');
-        return $this->render('blog/index.html.twig',[
+        return $this->render('blog/view.html.twig',[
             "urkey"=>$urkey,
         ]);
     }
@@ -27,7 +27,7 @@ class BlogController extends  AbstractController
             "name"=>$name,
         ]);
     }
-    public function list(Request $req, int $page = 1): Response
+    public function list(Request $req, int $page): Response
     {
         $page = $req->query->get('page');
         return $this->render('blog/list.html.twig',[

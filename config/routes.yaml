@@ -22,5 +22,5 @@ list:
     path: /blog/list/{page}
     controller: App\Controller\BlogController::list
 view:
-    path: /blog/view
+    path: /blog/view/{urlkey}
     controller: App\Controller\BlogController::view
