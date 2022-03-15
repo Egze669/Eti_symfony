@@ -25,6 +25,10 @@ class BlogPost
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $additional_links;
 
+    #[ORM\ManyToOne(targetEntity: BlogCategory::class, inversedBy: 'post')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +78,18 @@ class BlogPost
     public function setAdditionalLinks(?string $additional_links): self
     {
         $this->additional_links = $additional_links;
+
+        return $this;
+    }
+
+    public function getCategory(): ?BlogCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?BlogCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
