@@ -16,10 +16,22 @@ class BlogController extends  AbstractController
 
     public function view(ManagerRegistry $doctrine,int $id): Response
     {
-        $category= $doctrine->getRepository(BlogCategory::class)->find($id);
-        $posts= $category->getPost();
+        if($id != 0 ) {
+            $category = $doctrine->getRepository(BlogCategory::class)->find($id);
+            $posts = $category->getPost();
+        }
+        else{
+            $posts = $doctrine->getRepository(BlogPost::class)->findAll();
+        }
         return $this->render('blog/view.html.twig',[
             "posts"=>$posts,
+        ]);
+    }
+    public function showpost(ManagerRegistry $doctrine,int $id): Response
+    {
+        $post= $doctrine->getRepository(BlogPost::class)->find($id);
+        return $this->render('blog/showpost.html.twig',[
+            "post"=>$post,
         ]);
     }
     public function index(): Response
@@ -29,6 +41,7 @@ class BlogController extends  AbstractController
             "name"=>$name,
         ]);
     }
+
     public function list(ManagerRegistry $doctrine): Response
     {
         $repository = $doctrine->getRepository(BlogCategory::class);

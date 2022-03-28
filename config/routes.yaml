@@ -6,9 +6,6 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
-lucky_number:
-    path: /lucky/number
-    controller: App\Controller\LuckyController::number
 index:
     path: /blog/index
     controller: App\Controller\BlogController::index
@@ -31,5 +28,5 @@ newpost:
     path: /blog/newpost
     controller: App\Controller\BlogController::newpost
 showpost:
-    path: /blog/showpost
+    path: /blog/showpost/{id}
     controller: App\Controller\BlogController::showpost

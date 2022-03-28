@@ -1,0 +1,8 @@
+{% extends "blog/index.html.twig" %}
+{% block content%}
+    <h1>{{ post.title }}</h1>
+    <h5>{{ post.createdAt|date("m/d/Y") }}</h5>
+    <p>{{ post.description }}</p>
+    <p>{{ post.content }}</p>
+    <h3>{{ post.additionalLinks }}</h3>
+{% endblock %}

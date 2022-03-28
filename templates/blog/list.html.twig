@@ -5,6 +5,6 @@
         <li><a href="{{ url('view',{'id':category.id}) }}">{{ category.name }}</li>
         {% endfor %}
     </ul>
-    <p><a href="{{ url('newcat') }}">New category</p>
-    <p><a href="{{ url('newpost') }}">New post</p>
+    <p><a href="{{ url('view',{'id':0}) }}">Show all posts</p>
+    <p><a href="{{ url('newcat') }}">New category<a href="{{ url('newpost') }}">New post</p>
 {% endblock %}
