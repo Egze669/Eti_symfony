@@ -19,8 +19,17 @@ login:
     path: /blog/login
     controller: App\Controller\BlogController::login
 list:
-    path: /blog/list/{page}
+    path: /blog/list
     controller: App\Controller\BlogController::list
 view:
-    path: /blog/view/{urlkey}
+    path: /blog/view/{id}
     controller: App\Controller\BlogController::view
+newcat:
+    path: /blog/newcat
+    controller: App\Controller\BlogController::newcat
+newpost:
+    path: /blog/newpost
+    controller: App\Controller\BlogController::newpost
+showpost:
+    path: /blog/showpost
+    controller: App\Controller\BlogController::showpost

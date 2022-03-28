@@ -1,23 +1,25 @@
 <?php
-// src/Controller/LuckyController.php
 namespace App\Controller;
-
+use App\Form\BlogPostFormType;
+use Symfony\Component\Form\FormTypeInterface;
+use App\Entity\BlogCategory;
+use App\Entity\BlogPost;
+use App\Repository\BlogCategoryRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Form\CategoryformType;
 
 class BlogController extends  AbstractController
 {
 
-    /**
-     * @throws \Exception
-     */
-    public function view(Request $req,string $urlkey): Response
+    public function view(ManagerRegistry $doctrine,int $id): Response
     {
-        $urkey = $req->query->get('urkey');
+        $category= $doctrine->getRepository(BlogCategory::class)->find($id);
+        $posts= $category->getPost();
         return $this->render('blog/view.html.twig',[
-            "urkey"=>$urkey,
+            "posts"=>$posts,
         ]);
     }
     public function index(): Response
@@ -27,13 +29,50 @@ class BlogController extends  AbstractController
             "name"=>$name,
         ]);
     }
-    public function list(Request $req, int $page): Response
+    public function list(ManagerRegistry $doctrine): Response
     {
-        $page = $req->query->get('page');
+        $repository = $doctrine->getRepository(BlogCategory::class);
+        $blogCategories = $repository->findAll();
+
         return $this->render('blog/list.html.twig',[
-            "page"=>$page,
+            "blogCategories"=>$blogCategories,
         ]);
     }
+    public function newcat(Request $request,ManagerRegistry $doctrine)
+    {
+        $category = new BlogCategory();
+
+        $form = $this->createForm(CategoryformType::class, $category);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()&&$form->isValid())
+        {
+            $em = $doctrine->getManager();
+            $em->persist($category);
+            $em->flush();
+        }
+
+        return $this->render('blog/newcat.html.twig',[
+            'form'=>$form->createView(),
+        ]);
+    }
+    public function newpost(Request $request,ManagerRegistry $doctrine): Response
+    {
+    $post = new BlogPost();
+
+        $form = $this->createForm(BlogPostFormType::class, $post);
+        $form->handleRequest($request);
+        if($form->isSubmitted()&&$form->isValid())
+        {
+            $em = $doctrine->getManager();
+            $em->persist($post);
+            $em->flush();
+        }
+    return $this->render('blog/newpost.html.twig',[
+        'form'=>$form->createView(),
+    ]);
+}
+
     public function login(): Response
     {
         $name = "Login";
@@ -48,4 +87,5 @@ class BlogController extends  AbstractController
             "name"=>$name,
         ]);
     }
+
 }

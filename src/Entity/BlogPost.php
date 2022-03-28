@@ -19,7 +19,7 @@ class BlogPost
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime')]
     private $created_at;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -28,6 +28,9 @@ class BlogPost
     #[ORM\ManyToOne(targetEntity: BlogCategory::class, inversedBy: 'post')]
     #[ORM\JoinColumn(nullable: false)]
     private $category;
+
+    #[ORM\Column(type: 'text')]
+    private $content;
 
     public function getId(): ?int
     {
@@ -58,12 +61,12 @@ class BlogPost
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTime $created_at): self
     {
         $this->created_at = $created_at;
 
@@ -90,6 +93,18 @@ class BlogPost
     public function setCategory(?BlogCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

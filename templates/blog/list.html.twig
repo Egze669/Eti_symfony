@@ -1,7 +1,10 @@
 {% extends "blog/index.html.twig" %}
 {% block content%}
-    {{ parent() }}
     <ul>
-        <li><a href="{{ url('view',{'urlkey':'test'}) }}">post 1</a></li>
+        {% for category in blogCategories %}
+        <li><a href="{{ url('view',{'id':category.id}) }}">{{ category.name }}</li>
+        {% endfor %}
     </ul>
+    <p><a href="{{ url('newcat') }}">New category</p>
+    <p><a href="{{ url('newpost') }}">New post</p>
 {% endblock %}

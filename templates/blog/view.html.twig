@@ -1,6 +1,17 @@
-{% extends "blog/index.html.twig" %}
+{#{% extends "blog/index.html.twig" %}#}
+{% extends "blog/list.html.twig" %}
 {% block content%}
-    <p>sdasdsadasxcz</p>
-    <p>sdasdsadasxcz</p>
-    <p>sdasdsadasxcz</p>
+    <table>
+        <tr>
+            <td>Title</td>
+            <td>Description</td>
+        </tr>
+    {% for post in posts %}
+
+        <tr>
+            <td><a href="{{ url('showpost',{'id':post.id}) }}">{{ post.title }}  </td>
+            <td>{{ post.description }}</td>
+        </tr>
+    {% endfor %}
+    </table>
 {% endblock %}
