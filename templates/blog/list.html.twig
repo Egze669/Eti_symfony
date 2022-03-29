@@ -1,5 +1,12 @@
 {% extends "blog/index.html.twig" %}
 {% block content%}
+{#    {% for label, messages in app.flashes %}#}
+{#        {% for message in messages %}#}
+{#            <div class="flash-{{ label }}">#}
+{#                {{ message }}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endfor %}#}
     <ul>
         {% for category in blogCategories %}
         <li><a href="{{ url('view',{'id':category.id}) }}">{{ category.name }}</li>

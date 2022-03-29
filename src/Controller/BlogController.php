@@ -41,7 +41,6 @@ class BlogController extends  AbstractController
             "name"=>$name,
         ]);
     }
-
     public function list(ManagerRegistry $doctrine): Response
     {
         $repository = $doctrine->getRepository(BlogCategory::class);
@@ -60,9 +59,14 @@ class BlogController extends  AbstractController
 
         if($form->isSubmitted()&&$form->isValid())
         {
+            $this->addFlash(
+                'notice',
+                'Your changes were saved!'
+            );
             $em = $doctrine->getManager();
             $em->persist($category);
             $em->flush();
+            return $this->redirectToRoute('newcat');
         }
 
         return $this->render('blog/newcat.html.twig',[
@@ -77,9 +81,14 @@ class BlogController extends  AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted()&&$form->isValid())
         {
+            $this->addFlash(
+                'notice',
+                'Your changes were saved!'
+            );
             $em = $doctrine->getManager();
             $em->persist($post);
             $em->flush();
+            return $this->redirectToRoute('newpost');
         }
     return $this->render('blog/newpost.html.twig',[
         'form'=>$form->createView(),
