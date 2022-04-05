@@ -1,20 +1,28 @@
 <html>
 <head>
     {% block tittle %}
-    <title>Blog Title</title>
+        <title>Blog Title</title>
     {% endblock %}
 </head>
 <body>
 {% block body %}
-<div>
-    {% block links %}
-    <a href="{{ url('index')}}" title="Home">Homepage</a>
-    <a href="{{ url('list')}}" title="List">Article List</a>
-    <a href="{{ url('login')}}" title="Login">Login</a>
-    <a href="{{ url('contact')}}" title="Contact">Contact</a>
-    {% endblock %}
-</div>
-<div>
+    <div>
+        {% block links %}
+            <a href="{{ url('index') }}" title="Home">Homepage</a>
+            <a href="{{ url('list') }}" title="List">Article List</a>
+            {% if is_granted('IS_AUTHENTICATED_FULLY')==false %}
+                <a href="{{ url('login') }}" title="login">Login</a>
+            {% endif %}
+            <a href="{{ url('contact') }}" title="Contact">Contact</a>
+        {% endblock %}
+    </div>
+    <div>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <p>Welcome: {{ app.user.username }}</p>
+            <a href="{{ url('logout') }}" title="logout">Logout</a>
+        {% endif %}
+    </div>
+    <div>
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="flash-{{ label }}">
@@ -23,9 +31,9 @@
             {% endfor %}
         {% endfor %}
     </div>
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
 {% endblock %}
 </body>
 </html>

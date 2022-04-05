@@ -12,9 +12,6 @@ index:
 contact:
     path: /blog/contact
     controller: App\Controller\BlogController::contact
-login:
-    path: /blog/login
-    controller: App\Controller\BlogController::login
 list:
     path: /blog/list
     controller: App\Controller\BlogController::list
@@ -33,3 +30,9 @@ showpost:
 register:
     path: /blog/register
     controller: App\Controller\BlogController::register
+login:
+    path: /blog/login
+    controller: App\Controller\BlogController::login
+logout:
+    path: /blog/logout
+    methods: GET

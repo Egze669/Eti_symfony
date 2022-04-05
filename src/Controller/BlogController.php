@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\CategoryformType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class BlogController extends AbstractController
 {
@@ -76,6 +77,7 @@ class BlogController extends AbstractController
      */
     public function newcat(Request $request, ManagerRegistry $doctrine)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $category = new BlogCategory();
 
         $form = $this->createForm(CategoryformType::class, $category);
@@ -110,6 +112,7 @@ class BlogController extends AbstractController
         */
     public function newpost(Request $request, ManagerRegistry $doctrine): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $post = new BlogPost();
         $form = $this->createForm(BlogPostFormType::class, $post);
         $form->handleRequest($request);
@@ -135,16 +138,6 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Show login page.
-     */
-    public function login(): Response
-    {
-        $name = "Login";
-        return $this->render('blog/login.html.twig', [
-            "name" => $name,
-        ]);
-    }
 
     /*
      * Show contact page
@@ -160,7 +153,7 @@ class BlogController extends AbstractController
     /*
      * Registration
      */
-    public function register(UserPasswordHasherInterface $passwordHasher,Request $request, ManagerRegistry $doctrine)
+    public function register(UserPasswordHasherInterface $passwordHasher, Request $request, ManagerRegistry $doctrine)
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -190,6 +183,19 @@ class BlogController extends AbstractController
         }
         return $this->render('blog/register.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /*
+     * login
+     */
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+        return $this->render('blog/login.html.twig', [
+            'error' => $error,
+            'last_username' => $lastUsername,
         ]);
     }
 }
