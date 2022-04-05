@@ -19,8 +19,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class BlogController extends AbstractController
 {
-    /*
-     * Show full list of posts based on category or all of them
+
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
      */
     public function view(ManagerRegistry $doctrine, int $id): Response
     {
@@ -35,8 +38,10 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Show blog post in detail
+    /**
+     * @param ManagerRegistry $doctrine
+     * @param int $id
+     * @return Response
      */
     public function showpost(ManagerRegistry $doctrine, int $id): Response
     {
@@ -46,8 +51,9 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Base homepage
+
+    /**
+     * @return Response
      */
     public function index(): Response
     {
@@ -57,8 +63,10 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Show list of categories as well as buttons to add category and blog post
+
+    /**
+     * @param ManagerRegistry $doctrine
+     * @return Response
      */
     public function list(ManagerRegistry $doctrine): Response
     {
@@ -70,10 +78,10 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Add new category.
-     * Redirect to list and show notice if valid
-     * Show error message if not valid
+    /**
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function newcat(Request $request, ManagerRegistry $doctrine)
     {
@@ -105,11 +113,12 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-        * Add new Post.
-        * Redirect to list and show notice if valid
-        * Show error message if not valid
-        */
+
+    /**
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @return Response
+     */
     public function newpost(Request $request, ManagerRegistry $doctrine): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -139,8 +148,8 @@ class BlogController extends AbstractController
     }
 
 
-    /*
-     * Show contact page
+    /**
+     * @return Response
      */
     public function contact(): Response
     {
@@ -150,11 +159,17 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * Registration
+    /**
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function register(UserPasswordHasherInterface $passwordHasher, Request $request, ManagerRegistry $doctrine)
     {
+        if($this->isGranted('ROLE_USER')){;
+            return $this->redirectToRoute('list');
+        }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -174,11 +189,6 @@ class BlogController extends AbstractController
                 $em->persist($user);
                 $em->flush();
                 return $this->redirectToRoute('list');
-            } else {
-                $this->addFlash(
-                    'error',
-                    'Something went wrong sorry!'
-                );
             }
         }
         return $this->render('blog/register.html.twig', [
@@ -186,11 +196,16 @@ class BlogController extends AbstractController
         ]);
     }
 
-    /*
-     * login
+
+    /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if($this->isGranted('ROLE_USER')){
+            return $this->redirectToRoute('list');
+        }
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('blog/login.html.twig', [

@@ -13,6 +13,9 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY')==false %}
                 <a href="{{ url('login') }}" title="login">Login</a>
             {% endif %}
+{#            {% if is_granted('ROLE_ADMIN')==false %}#}
+{#                <a href="{{ url('admin') }}" title="admin">Admin</a>#}
+{#            {% endif %}#}
             <a href="{{ url('contact') }}" title="Contact">Contact</a>
         {% endblock %}
     </div>
