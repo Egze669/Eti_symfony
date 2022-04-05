@@ -30,3 +30,6 @@ newpost:
 showpost:
     path: /blog/showpost/{id}
     controller: App\Controller\BlogController::showpost
+register:
+    path: /blog/register
+    controller: App\Controller\BlogController::register
