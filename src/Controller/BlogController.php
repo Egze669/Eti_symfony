@@ -77,7 +77,7 @@ class BlogController extends AbstractController
      */
     public function newcat(Request $request, ManagerRegistry $doctrine)
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('ROLE_REDACTOR');
         $category = new BlogCategory();
 
         $form = $this->createForm(CategoryformType::class, $category);
