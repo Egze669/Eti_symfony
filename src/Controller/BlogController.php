@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\PostComment;
 use App\Entity\User;
 use App\Form\BlogPostFormType;
+use App\Form\PostCommentFormType;
 use App\Form\RegistrationFormType;
 use Symfony\Component\Form\FormTypeInterface;
 use App\Entity\BlogCategory;
@@ -43,11 +45,35 @@ class BlogController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function showpost(ManagerRegistry $doctrine, int $id): Response
+    public function showpost(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
+//        $this->denyAccessUnlessGranted('ROLE_COMMENTER');
         $post = $doctrine->getRepository(BlogPost::class)->find($id);
+        $postcomments = $doctrine->getRepository(PostComment::class)->findby(array('comment'=>$id));
+
+        $comment = new PostComment();
+        $form = $this->createForm(PostCommentFormType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $doctrine->getManager();
+                $em->persist($comment);
+                $em->flush();
+                return $this->redirectToRoute('showpost',['id'=>$id]);
+            } else {
+                $this->addFlash(
+                    'error',
+                    'Something went wrong sorry!'
+                );
+            }
+        }
+
+
         return $this->render('blog/showpost.html.twig', [
+            "comments"=>$postcomments,
             "post" => $post,
+            "form" => $form->createView(),
         ]);
     }
 

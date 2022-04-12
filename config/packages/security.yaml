@@ -45,6 +45,7 @@ security:
     role_hierarchy:
         ROLE_REDACTOR: ROLE_USER
         ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_COMMENTER: ROLE_USER
 when@test:
     security:
         password_hashers:

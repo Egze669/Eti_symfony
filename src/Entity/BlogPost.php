@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BlogPostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BlogPostRepository::class)]
@@ -31,6 +33,14 @@ class BlogPost
 
     #[ORM\Column(type: 'text')]
     private $content;
+
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: PostComment::class)]
+    private $comment;
+
+    public function __construct()
+    {
+        $this->comment = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,4 +122,38 @@ class BlogPost
 //    {
 //        return $this->created_at;
 //    }
+
+/**
+ * @return Collection<int, PostComment>
+ */
+public function getComment(): Collection
+{
+    return $this->comment;
+}
+
+public function addComment(PostComment $comment): self
+{
+    if (!$this->comment->contains($comment)) {
+        $this->comment[] = $comment;
+        $comment->setComment($this);
+    }
+
+    return $this;
+}
+
+public function removeComment(PostComment $comment): self
+{
+    if ($this->comment->removeElement($comment)) {
+        // set the owning side to null (unless already changed)
+        if ($comment->getComment() === $this) {
+            $comment->setComment(null);
+        }
+    }
+
+    return $this;
+}
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

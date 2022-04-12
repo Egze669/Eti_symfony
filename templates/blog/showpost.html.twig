@@ -5,4 +5,12 @@
     <p>{{ post.description }}</p>
     <p>{{ post.content }}</p>
     <h3>{{ post.additionalLinks }}</h3>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {{ form(form) }}
+    {% endif %}
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.author }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
