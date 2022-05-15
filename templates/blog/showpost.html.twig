@@ -10,7 +10,16 @@
     {% endif %}
     <ul>
         {% for comment in comments %}
+            <li>
+            <ul>
             <li>{{ comment.author }}</li>
+            <li>{{ comment.content}} {{ comment.createdAt|date('Y-m-d')}}</li>
+                {% if (app.user.Username == comment.author) or is_granted('ROLE_REDACTOR')%}
+            <li><a href="{{ path('delete_comment', {'idcomment': comment.id ,'idpost': post.id}) }}">Delete</a>
+            <input type="button" value="edytuj" ></li>
+                {% endif %}
+                </ul>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

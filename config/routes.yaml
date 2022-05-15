@@ -36,3 +36,6 @@ login:
 logout:
     path: /blog/logout
     methods: GET
+delete_comment:
+    path: /blog/delete_comment{idcomment}{idpost}
+    controller: App\Controller\BlogController::deleteComment

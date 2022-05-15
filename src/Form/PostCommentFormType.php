@@ -19,17 +19,13 @@ class PostCommentFormType extends AbstractType
     {
         $builder
             ->add('content')
-            ->add('author',TextareaType::class)
-            ->add('created_at',DateType::class)
+            //->add('author',TextareaType::class)
+            //->add('created_at',DateType::class)
             ->add('additional_images')
-            ->add('comment',EntityType::class, array(
-                'class'=>BlogPost::class,
-//                'mapped'=>false,
-//                'choice_label'=>'comment',
-//                'choice_value'=>'id',
-//                'attr'=>array('class'=>'comment'),
-//                'data'=>$em->getReference(BlogPost)
-            ))
+//            ->add('comment',EntityType::class, array(
+//                'class'=>BlogPost::class,
+//
+//            ))
             ->add('save',SubmitType::class)
         ;
     }

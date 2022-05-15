@@ -57,6 +57,9 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $comment->setAuthor($this->getUser()->getUsername());
+                $comment->setComment($post);
+                $comment->setCreatedAt(date_create('now',null));
                 $em = $doctrine->getManager();
                 $em->persist($comment);
                 $em->flush();
@@ -75,6 +78,14 @@ class BlogController extends AbstractController
             "post" => $post,
             "form" => $form->createView(),
         ]);
+    }
+    public function deleteComment(Request $request, ManagerRegistry $doctrine, $idcomment,$idpost): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $comment = $doctrine->getRepository(PostComment::class)->find($idcomment);
+        $entityManager->remove($comment);
+        $entityManager->flush();
+        return $this->redirectToRoute('showpost',['id'=>$idpost]);
     }
 
 
