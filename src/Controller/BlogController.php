@@ -49,6 +49,7 @@ class BlogController extends AbstractController
     {
         $post = $doctrine->getRepository(BlogPost::class)->find($id);
         $postcomments = $doctrine->getRepository(PostComment::class)->findby(array('comment'=>$id));
+        $users = $doctrine->getRepository(User::class)->findAll();
 
         $comment = new PostComment();
         $form = $this->createForm(PostCommentFormType::class, $comment);
@@ -75,6 +76,7 @@ class BlogController extends AbstractController
         return $this->render('blog/showpost.html.twig', [
             "comments"=>$postcomments,
             "post" => $post,
+            "users" => $users,
             "form" => $form->createView(),
         ]);
     }
@@ -125,6 +127,15 @@ class BlogController extends AbstractController
         $entityManager = $doctrine->getManager();
         $user = $doctrine->getRepository(User::class)->findOneBy(array('username'=>$author));
         $user->setRoles([]);
+
+        $entityManager->flush();
+        return $this->redirectToRoute('showpost',['id'=>$idpost]);
+    }
+    public function addCommentPrivilege(Request $request, ManagerRegistry $doctrine, $author,$idpost): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $user = $doctrine->getRepository(User::class)->findOneBy(array('username'=>$author));
+        $user->setRoles(["ROLE_COMMENTER"]);
 
         $entityManager->flush();
         return $this->redirectToRoute('showpost',['id'=>$idpost]);

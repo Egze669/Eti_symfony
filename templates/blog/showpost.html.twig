@@ -14,7 +14,16 @@
             <ul>
             <li>{{ comment.author }}
                 {% if is_granted('ROLE_REDACTOR')%}
-                    <a href="{{ path('revoke_comment', {'author': comment.author,'idpost': post.id}) }}" >remove privilege</a>
+                    {% for user in users %}
+                        {% if user.username == comment.author %}
+                            {% if "ROLE_COMMENTER" in user.roles%}
+                                <a href="{{ path('revoke_comment', {'author': comment.author,'idpost': post.id}) }}" >remove privilege</a>
+                       {% else %}
+                           <a href="{{ path('add_role_comment', {'author': comment.author,'idpost': post.id}) }}" >add privilege</a>
+
+                        {% endif %}
+                            {% endif %}
+                    {% endfor %}
                 {% endif %}
             </li>
             <li>{{ comment.content}} {{ comment.createdAt|date('Y-m-d')}}</li>

@@ -42,6 +42,9 @@ delete_comment:
 revoke_comment:
     path: /blog/revoke_comment{author}{idpost}
     controller: App\Controller\BlogController::revokeCommentPrivilege
+add_role_comment:
+    path: /blog/add_role_comment{author}{idpost}
+    controller: App\Controller\BlogController::addCommentPrivilege
 edit_comment:
     path: /blog/edit_comment/{idcomment}/{idpost}
     controller: App\Controller\BlogController::editComment
