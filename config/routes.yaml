@@ -39,3 +39,9 @@ logout:
 delete_comment:
     path: /blog/delete_comment{idcomment}{idpost}
     controller: App\Controller\BlogController::deleteComment
+revoke_comment:
+    path: /blog/revoke_comment{author}{idpost}
+    controller: App\Controller\BlogController::revokeCommentPrivilege
+edit_comment:
+    path: /blog/edit_comment/{idcomment}/{idpost}
+    controller: App\Controller\BlogController::editComment

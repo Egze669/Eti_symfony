@@ -20,7 +20,7 @@ class BlogPostFormType extends AbstractType
         $builder
             ->add('title',TextType::class)
             ->add('description',TextareaType::class)
-            ->add('created_at',DateType::class)
+            //->add('created_at',DateType::class)
             ->add('additional_links',TextareaType::class)
             ->add('content',TextareaType::class)
             ->add('category',EntityType::class, [

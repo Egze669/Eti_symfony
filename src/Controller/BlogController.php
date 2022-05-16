@@ -47,7 +47,6 @@ class BlogController extends AbstractController
      */
     public function showpost(Request $request, ManagerRegistry $doctrine, int $id): Response
     {
-//        $this->denyAccessUnlessGranted('ROLE_COMMENTER');
         $post = $doctrine->getRepository(BlogPost::class)->find($id);
         $postcomments = $doctrine->getRepository(PostComment::class)->findby(array('comment'=>$id));
 
@@ -79,11 +78,54 @@ class BlogController extends AbstractController
             "form" => $form->createView(),
         ]);
     }
-    public function deleteComment(Request $request, ManagerRegistry $doctrine, $idcomment,$idpost): Response
+
+    /**
+     * @param Request $request
+     * @param ManagerRegistry $doctrine
+     * @param $idcomment integer
+     * @param $idpost intger
+     * @return Response
+     */
+    public function deleteComment(Request $request, ManagerRegistry $doctrine, $idcomment, $idpost): Response
     {
         $entityManager = $doctrine->getManager();
         $comment = $doctrine->getRepository(PostComment::class)->find($idcomment);
         $entityManager->remove($comment);
+        $entityManager->flush();
+        return $this->redirectToRoute('showpost',['id'=>$idpost]);
+    }
+    public function editComment(Request $request, ManagerRegistry $doctrine, $idcomment, $idpost): Response
+    {
+        $postcomment = $doctrine->getRepository(PostComment::class)->find($idcomment);
+
+        $form = $this->createForm(PostCommentFormType::class, $postcomment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $doctrine->getManager();
+                $em->persist($postcomment);
+                $em->flush();
+                return $this->redirectToRoute('showpost',['id'=>$idpost]);
+            } else {
+                $this->addFlash(
+                    'error',
+                    'Something went wrong sorry!'
+                );
+            }
+        }
+
+
+        return $this->render('blog/editcomment.html.twig', [
+            "form" => $form->createView(),
+        ]);
+    }
+    public function revokeCommentPrivilege(Request $request, ManagerRegistry $doctrine, $author,$idpost): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $user = $doctrine->getRepository(User::class)->findOneBy(array('username'=>$author));
+        $user->setRoles([]);
+
         $entityManager->flush();
         return $this->redirectToRoute('showpost',['id'=>$idpost]);
     }
@@ -134,6 +176,7 @@ class BlogController extends AbstractController
                     'notice',
                     'You created your category congratz!'
                 );
+                $category->setCreatedAt(date_create('now',null));
                 $em = $doctrine->getManager();
                 $em->persist($category);
                 $em->flush();
@@ -168,6 +211,7 @@ class BlogController extends AbstractController
                     'notice',
                     'You created your post congratz!'
                 );
+                $post->setCreatedAt(date_create('now',null));
                 $em = $doctrine->getManager();
                 $em->persist($post);
                 $em->flush();
@@ -222,6 +266,7 @@ class BlogController extends AbstractController
                     'notice',
                     'Welcome new user!'
                 );
+                $user->setRoles(['ROLE_COMMENTER']);
                 $em = $doctrine->getManager();
                 $em->persist($user);
                 $em->flush();
