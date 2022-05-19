@@ -1,50 +1,49 @@
-
 controllers:
-    resource: ../src/Controller/
-    type: annotation
+  resource: ../src/Controller/
+  type: annotation
 
 kernel:
-    resource: ../src/Kernel.php
-    type: annotation
+  resource: ../src/Kernel.php
+  type: annotation
 index:
-    path: /blog/index
-    controller: App\Controller\BlogController::index
+  path: /blog/index
+  controller: App\Controller\BlogController::index
 contact:
-    path: /blog/contact
-    controller: App\Controller\BlogController::contact
+  path: /blog/contact
+  controller: App\Controller\BlogController::contact
 list:
-    path: /blog/list
-    controller: App\Controller\BlogController::list
+  path: /blog/list
+  controller: App\Controller\BlogController::list
 view:
-    path: /blog/view/{id}
-    controller: App\Controller\BlogController::view
+  path: /blog/view/{id}
+  controller: App\Controller\BlogController::view
 newcat:
-    path: /blog/newcat
-    controller: App\Controller\BlogController::newcat
+  path: /blog/newcat
+  controller: App\Controller\BlogController::newcat
 newpost:
-    path: /blog/newpost
-    controller: App\Controller\BlogController::newpost
+  path: /blog/newpost
+  controller: App\Controller\BlogController::newpost
 showpost:
-    path: /blog/showpost/{id}
-    controller: App\Controller\BlogController::showpost
+  path: /blog/showpost/{id}
+  controller: App\Controller\BlogController::showpost
 register:
-    path: /blog/register
-    controller: App\Controller\BlogController::register
+  path: /blog/register
+  controller: App\Controller\RegistrationController::register
 login:
-    path: /blog/login
-    controller: App\Controller\BlogController::login
+  path: /blog/login
+  controller: App\Controller\LoginController::login
 logout:
-    path: /blog/logout
-    methods: GET
+  path: /blog/logout
+  methods: GET
 delete_comment:
-    path: /blog/delete_comment{idcomment}{idpost}
-    controller: App\Controller\BlogController::deleteComment
+  path: /blog/delete_comment{idcomment}{idpost}
+  controller: App\Controller\CommentController::deleteComment
 revoke_comment:
-    path: /blog/revoke_comment{author}{idpost}
-    controller: App\Controller\BlogController::revokeCommentPrivilege
+  path: /blog/revoke_comment{author}{idpost}
+  controller: App\Controller\CommentController::revokeCommentPrivilege
 add_role_comment:
-    path: /blog/add_role_comment{author}{idpost}
-    controller: App\Controller\BlogController::addCommentPrivilege
+  path: /blog/add_role_comment{author}{idpost}
+  controller: App\Controller\CommentController::addCommentPrivilege
 edit_comment:
-    path: /blog/edit_comment/{idcomment}/{idpost}
-    controller: App\Controller\BlogController::editComment
+  path: /blog/edit_comment/{idcomment}/{idpost}
+  controller: App\Controller\CommentController::editComment

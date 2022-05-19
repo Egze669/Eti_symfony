@@ -1,38 +1,41 @@
 {% extends "blog/index.html.twig" %}
-{% block content%}
+{% block content %}
     <h1>{{ post.title }}</h1>
     <h5>{{ post.createdAt|date("m/d/Y") }}</h5>
     <p>{{ post.description }}</p>
     <p>{{ post.content }}</p>
     <h3>{{ post.additionalLinks }}</h3>
     {% if is_granted('ROLE_COMMENTER') %}
-    {{ form(form) }}
+        {{ form(form) }}
     {% endif %}
     <ul>
         {% for comment in comments %}
             <li>
-            <ul>
-            <li>{{ comment.author }}
-                {% if is_granted('ROLE_REDACTOR')%}
-                    {% for user in users %}
-                        {% if user.username == comment.author %}
-                            {% if "ROLE_COMMENTER" in user.roles%}
-                                <a href="{{ path('revoke_comment', {'author': comment.author,'idpost': post.id}) }}" >remove privilege</a>
-                       {% else %}
-                           <a href="{{ path('add_role_comment', {'author': comment.author,'idpost': post.id}) }}" >add privilege</a>
+                <ul>
+                    <li>{{ comment.author }}
+                        {% if is_granted('ROLE_REDACTOR') %}
+                            {% for user in users %}
+                                {% if user.username == comment.author %}
+                                    {% if "ROLE_COMMENTER" in user.roles %}
+                                        <a href="{{ path('revoke_comment', {'author': comment.author,'idpost': post.id}) }}">remove
+                                            privilege</a>
+                                    {% else %}
+                                        <a href="{{ path('add_role_comment', {'author': comment.author,'idpost': post.id}) }}">add
+                                            privilege</a>
 
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                            {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </li>
-            <li>{{ comment.content}} {{ comment.createdAt|date('Y-m-d')}}</li>
-                {% if app.user %}
-                {% if (app.user.username == comment.author) or is_granted('ROLE_REDACTOR')==true%}
-            <li><a href="{{ path('delete_comment', {'idcomment': comment.id ,'idpost': post.id}) }}">Delete</a>
-                <a href="{{ path('edit_comment', {'idcomment': comment.id ,'idpost': post.id}) }}">Edytuj</a></li>
-                {% endif %}
-                {% endif %}
+                    </li>
+                    <li>{{ comment.content }} {{ comment.createdAt|date('Y-m-d') }}</li>
+                    {% if app.user %}
+                        {% if (app.user.username == comment.author) or is_granted('ROLE_REDACTOR')==true %}
+                            <li><a href="{{ path('delete_comment', {'idcomment': comment.id ,'idpost': post.id}) }}">Delete</a>
+                                <a href="{{ path('edit_comment', {'idcomment': comment.id ,'idpost': post.id}) }}">Edytuj</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
                 </ul>
             </li>
         {% endfor %}
